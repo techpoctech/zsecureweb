@@ -1,105 +1,65 @@
-# ZsecureWeb
-
+ZsecureWeb & CaiberPolice
 ZsecureWeb is available under two distinct licenses:
 
-1. **Open Source (AGPLv3):** Free for community, personal, and open-source use under the terms of the GNU Affero General Public License v3.0. Any network-hosted modifications or derivative works must be made publicly available under AGPLv3.
-2. **Commercial License:** For enterprises seeking to embed, modify, or deploy ZsecureWeb without the copyleft obligations of AGPLv3. Commercial licenses include enterprise SLAs, dedicated support, and custom deployment options.
+Open Source (AGPLv3): Free for community, personal, and open-source use under the terms of the GNU Affero General Public License v3.0. Any network-hosted modifications or derivative works must be made publicly available under AGPLv3.
+
+Commercial License: For enterprises seeking to embed, modify, or deploy ZsecureWeb and CaiberPolice without the copyleft obligations of AGPLv3. Commercial licenses include enterprise SLAs, dedicated support, and custom deployment options.
 
 To inquire about commercial licensing, contact: golengeeks@gmail.com
 
-The Open-Source, Hybrid-Local SASE & Enterprise Browser Enclave Platform
+🛡 Architectural Overview: The 2-Component SASE Model
+ZsecureWeb replaces legacy hairpinned proxies (Zscaler, Netskope, Palo Alto Networks) with a unified, local-first architecture built on a clean 2-component design:
 
-ZsecureWeb is a disruptive, unified SASE and Security Service Edge (SSE) platform designed to replace legacy hairpinned proxies (Zscaler, Netskope, Palo Alto Networks). By converging Zero Trust Network Access (ZTNA 2.0), Data Loss Prevention (DLP), Inline AI Security, and Endpoint Posture into a single local-first architecture, ZsecureWeb delivers sub-10ms enforcement latency and a 90% reduction in cloud infrastructure egress costs.
+CaiberPolice (caiberd - Native OS Daemon): Handles low-level system enforcement, including system health monitoring, TPM 2.0 / Apple Secure Enclave hardware attestation, and eBPF-based network packet filtering/routing.
 
-ZsecureWeb - Open-Source Hybrid SASE & Enterprise Browser Platform
-Copyright (C) 2026 ZsecureWeb Contributors
+ZsecureWeb (Enterprise Browser Enclave): Forked Chromium baseline (techpoctech/chromium) integrated with zsecureweb-core, handling application-layer security such as DOM-level Data Loss Prevention (DLP), real-time AI prompt inspection, and Remote Browser Isolation (RBI) streaming.
 
-## 🏗 System Architecture
-
-The workspace utilizes a meta-repository pattern to isolate upstream engine changes from proprietary logic:
-
-* **`zsecureweb/` (Root):** Orchestration tools, build engine, release manifests, and workflow scripts.
-* **`thirdParty/chromium/src/` (Submodule):** Forked Chromium baseline (`techpoctech/chromium`) containing minimal integration points.
-* **`thirdParty/chromium/src/zsecureweb/` (Submodule):** Core DLP engine, custom UI, and V8 hooks (`techpoctech/zsecureweb-core`).
-
----
-
-## 💻 System Prerequisites
-
+zsecureweb/
+├── .gitmodules               # Submodule & path routing definitions
+├── version.json              # Single source of truth for toolchain & pins
+├── caiberpolice/             # Component 1: Native OS Daemon & Posture Engine
+├── tools/                    # Build engine, setup scripts & automation
+└── thirdParty/
+    └── chromium/             # Component 2: Chromium browser baseline
+        └── src/
+            └── zsecureweb/   # Core DLP C++ module (zsecureweb-core)
+            
+💻 System Prerequisites
 Before initializing the workspace, ensure your host environment meets the baseline requirements:
 
-* **OS:** Linux (Ubuntu 22.04 LTS recommended), macOS, or Windows 10/11 (WSL2/Native)
-* **Hardware:** x86-64 machine, minimum 16 GB RAM (32 GB+ recommended), and ≥100 GB free disk space
-* **Dependencies:** `git`, `python3` (v3.9+), `curl`
+OS: Linux (Ubuntu 22.04 LTS recommended), macOS, or Windows 10/11 (WSL2/Native)
 
----
+Hardware: x86-64 machine, minimum 16 GB RAM (32 GB+ recommended), and ≥100 GB free disk space
 
-## 🚀 Quick Start & Environment Setup
+Dependencies: git, python3 (v3.9+), curl
 
-Follow these steps to set up a deterministic development environment.
+🚀 Quick Start & Environment Setup
+The repository uses an automated orchestration engine to handle workspace synchronization, dependency pinning, and submodule routing deterministically.
 
-### 1. Clone the Workspace
-Clone the parent orchestrator repository:
-```bash
-git clone [https://github.com/techpoctech/zsecureweb.git](https://github.com/techpoctech/zsecureweb.git)
-cd zsecureweb
-
-2. Run Workspace Initialization
-Run tools/setup.py to initialize submodules, fetch the pinned depot_tools revision, and run gclient sync automatically:
-
-python3 tools/setup.py
-
-Note : on Determinism: tools/setup.py delegates workspace synchronization to tools/automate.py, which reads version.json to lock depot_tools and Chromium dependencies to specific release hashes.
-
-⚙️ Building zsecureweb
-Once the setup completes, generate build configurations and compile the engine using Ninja.
-
-1. Configure PATH Environment
-Temporarily prepend the hermetic depot_tools path to your active shell session:
-
-Bash
-export PATH="$PWD/tools/depot_tools:$PATH"
-2. Generate Build Files
-Navigate to the Chromium source directory and initialize GN build flags:
-
-Bash
-cd thirdParty/chromium/src
-gn gen out/Default --args="is_debug=false symbol_level=0 target_cpu=\"x64\""
-3. Compile the Target
-Compile the zsecure_browser target using autoninja:
-
-Bash
-autoninja -C out/Default zsecure_browser
-🛠 Project Structure
-Plaintext
-zsecureweb/
-├── .gitmodules             # Submodule definitions & path routing
-├── version.json            # Single source of truth for toolchain & tag pins
-├── tools/
-│   ├── setup.py            # Machine initialization entry point
-│   ├── automate.py         # Deterministic gclient orchestration engine
-│   └── depot_tools/        # (Hermetic) Google Chromium build toolset
-└── thirdParty/
-    └── chromium/
-        ├── .gclient        # Generated gclient target mapping
-        └── src/            # Chromium source tree
-            └── zsecureweb/ # Core DLP C++ module (zsecureweb-core)
-🧹 Maintenance & Updating
-Re-syncing Dependencies: If version.json is updated by other contributors, pull the changes and re-run:
-
-Quick Start
-
-1. Clone and Set Up
+1. Clone and Set Up Workspace
+Clone the parent orchestrator repository and run the automation script:
 
 Bash
 git clone https://github.com/techpoctech/zsecureweb.git
 cd zsecureweb
 python3 tools/automate.py
-(This automatically configures gclient, pulls Chromium, and clones zsecureweb-core into thirdParty/chromium/src/zsecureweb.)
+(This automatically configures gclient, synchronizes submodules, locks dependencies via version.json, and prepares the Chromium tree.)
 
-2. Build the Project
+2. Build the System
+Build the Enterprise Browser:
 
 Bash
 python3 tools/build.py
+Build the CaiberPolice OS Daemon (caiberd):
 
-*"All product names, logos, and brands are property of their respective owners. All company, product, and service names used in this document are for identification purposes only. Use of these names, logos, and brands does not imply endorsement."
+Bash
+cd caiberpolice
+mkdir -p build && cd build
+cmake .. && cmake --build . --config Release
+🧹 Maintenance & Updating
+If repository configurations or submodules are updated upstream, re-synchronize your local workspace:
+
+Bash
+git pull origin main
+python3 tools/automate.py
+Copyright (C) 2026 ZsecureWeb Contributors. All product names, logos, and brands are property of their respective owners.
