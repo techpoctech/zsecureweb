@@ -14,6 +14,7 @@ CaiberPolice (caiberd - Native OS Daemon): Handles low-level system enforcement,
 
 ZsecureWeb (Enterprise Browser Enclave): Forked Chromium baseline (techpoctech/chromium) integrated with zsecureweb-core, handling application-layer security such as DOM-level Data Loss Prevention (DLP), real-time AI prompt inspection, and Remote Browser Isolation (RBI) streaming.
 
+```text
 zsecureweb/
 ├── .gitmodules               # Submodule & path routing definitions
 ├── version.json              # Single source of truth for toolchain & pins
