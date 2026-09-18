@@ -23,7 +23,8 @@ zsecureweb/
 └── thirdParty/
     └── chromium/             # Component 2: Chromium browser baseline
         └── src/
-            └── zsecureweb/   # Core DLP C++ module (zsecureweb-core) ```
+            └── zsecureweb/   # Core DLP C++ module (zsecureweb-core)
+```
             
 💻 System Prerequisites
 Before initializing the workspace, ensure your host environment meets the baseline requirements:
