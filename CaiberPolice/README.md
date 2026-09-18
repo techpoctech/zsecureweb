@@ -4,22 +4,7 @@ CaiberPolice is a high-performance, native endpoint SASE (Secure Access Service 
 Architecture Overview
 CaiberPolice operates as a background system daemon (caiberd), communicating via secure local IPC channels to enforce real-time security policies across multiple domains:
 
-caiberpolice/
-├── CMakeLists.txt
-├── include/
-│   ├── daemon_core.hpp
-│   ├── itpm_provider.hpp
-│   ├── iipc_server.hpp
-│   ├── swg/                # Web Gateway & DLP Engine
-│   ├── ztna/               # Zero Trust Private Access & Posture
-│   ├── casb/               # SaaS Governance & Data Security
-│   ├── rbi/                # Remote Browser Isolation Handler
-│   └── fwaas/              # Layer 4 Network Firewall & Posture
-└── src/
-    ├── main.cpp
-    ├── daemon_core.cpp
-    ├── platform/           # TPM 2.0 & Apple Secure Enclave hooks
-    └── ipc/                # Asynchronous IPC Server
+
 Core SASE Modules
 SWG (Secure Web Gateway & DLP): Intercepts web requests, scans outbound traffic, and prevents corporate data leakage.
 
