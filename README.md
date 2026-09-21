@@ -1,7 +1,7 @@
 ZsecureWeb & CaiberPolice
 ## System Architecture
 
-![CaiberPolice and ZSecureWeb Architecture](docs/assets/architecture.png)
+![CaiberPolice and ZSecureWeb Architecture](docs/assets/main_arch.png)
 
 ZsecureWeb is available under two distinct licenses:
 
