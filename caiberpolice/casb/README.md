@@ -1,2 +1,1 @@
-Handles device posture verification, network routing, and secure 
-tunnel orchestration before permitting access to corporate resources
+Implements inline data inspection, content pattern matching, and Data Loss Prevention (DLP) rules.
