@@ -1,4 +1,8 @@
 ZsecureWeb & CaiberPolice
+## System Architecture
+
+![CaiberPolice and ZSecureWeb Architecture](docs/assets/architecture.png)
+
 ZsecureWeb is available under two distinct licenses:
 
 Open Source (AGPLv3): Free for community, personal, and open-source use under the terms of the GNU Affero General Public License v3.0. Any network-hosted modifications or derivative works must be made publicly available under AGPLv3.
@@ -28,6 +32,8 @@ zsecureweb/
             
 💻 System Prerequisites
 Before initializing the workspace, ensure your host environment meets the baseline requirements:
+
+
 
 OS: Linux (Ubuntu 22.04 LTS recommended), macOS, or Windows 10/11 (WSL2/Native)
 
