@@ -1,6 +1,8 @@
 ZsecureWeb & CaiberPolice
 ## System Architecture
-"ZsecureWeb utilizes a zero-trust multi-process architecture. The rendering and user-facing browser shell run in an isolated user-space process, while the ZTNA and DLP policy engines operate within a completely independent, high-privilege daemon process. Communication between the boundaries is managed via hardware-attested, cryptographically signed local IPC channels, ensuring that an engine-level compromise cannot alter or bypass enterprise compliance hooks."
+ZsecureWeb utilizes a zero-trust multi-process architecture. The rendering and user-facing browser shell run in an isolated user-space process, while the ZTNA and DLP policy engines operate within a completely independent, high-privilege daemon process. Communication between the boundaries is managed via hardware-attested, cryptographically signed local IPC channels, ensuring that an engine-level compromise cannot alter or bypass enterprise compliance hooks.
+
+ZsecureWeb is built with a dual-mode deployment architecture tailored to customer policy. On managed corporate assets, the security layer deploys as an OS-level system service running under elevated privileges, preventing unhooking or process termination by standard users. For BYOD or contractor endpoints, it downgrades to a local user-space background daemon. The browser handles life-cycle orchestration and enforces mutual watchdog monitoring alongside cryptographic policy attestation to prevent local configuration tampering and downgrade attacks.
 
 ![CaiberPolice and ZSecureWeb Architecture](docs/assets/main_arch.png)
 
